@@ -49,26 +49,27 @@ register a new user. Press 'register' button and enter credentials.
 ### Step 7.
 To enter as a new user you need to verify email. In order to do this we need to
 change the user status and delete its email from the table "verify_emails".
-To do this open a new docker console and write 
-	`docker exec -it postgres_server bin/bash`.
 
-You will see root user. Then enter the command 
-	`psql -U greencity`. 
+- To do this open a new docker console and write 
+`docker exec -it postgres_server bin/bash`.
 
-This will open psql for greencity role. The next command is 
-	`\c greencity` 
+- You will see root user. Then enter the command 
+`psql -U greencity`. 
 
-which will select 'greencity' database. Now enter sql script:
-	`delete from verify_emails where id=1;`
+- This will open psql for greencity role. The next command is 
+`\c greencity` 
 
-to make sure the entry was deleted you can write
-	`select * from verify_emails;`
+- which will select 'greencity' database. Now enter sql script:
+`delete from verify_emails where id=1;`
 
-after this write the command 
-	`select * from users;`
+- to make sure the entry was deleted you can write
+`select * from verify_emails;`
 
-and find your user id. The last command is 
-	`update users set user_status=2 Where id=<id of your user>;`
+- after this write the command 
+`select * from users;`
+
+- and find your user id. The last command is 
+`update users set user_status=2 Where id=<id of your user>;`
 
 ### Step 8.
 Now you can go back to login page and login as your user.
