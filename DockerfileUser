@@ -1,0 +1,16 @@
+FROM alpine/git as clone
+WORKDIR /app
+ARG USER_REPO_URL
+RUN git clone -b dev $USER_REPO_URL
+
+FROM maven:3.6.3-jdk-11 as build
+WORKDIR /app
+COPY --from=clone /app/GreenCityUserMvp /app
+RUN mvn package -DskipTests
+
+FROM openjdk:11-jre-slim
+WORKDIR /app
+COPY google-creds.json ./google-creds.json
+COPY --from=build /app/core/target/*.jar /app
+ENTRYPOINT ["sh", "-c"]
+CMD ["java -jar *.jar"]

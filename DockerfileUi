@@ -1,0 +1,22 @@
+FROM alpine/git as clone
+WORKDIR /app
+ARG UI_REPO_URL
+RUN git clone -b dev $UI_REPO_URL
+
+COPY environment.ts /app/env/environment.ts
+WORKDIR /app/GreenCityClient/src/environments
+RUN rm environment.ts
+WORKDIR /app/env
+RUN cp environment.ts /app/GreenCityClient/src/environments
+
+FROM node:14.20.1-alpine AS build
+WORKDIR /app
+COPY --from=clone /app/GreenCityClient /app
+
+RUN npm install -g @angular/cli@9.1.15
+RUN npm install --save-dev @angular-devkit/build-angular
+RUN npm install 
+COPY . .
+EXPOSE 4200
+
+CMD ng serve --aot=false --host 0.0.0.0 --disableHostCheck

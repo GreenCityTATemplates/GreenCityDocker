@@ -2,3 +2,5 @@
 google-creds.json
 env_file
 env_postgres
+environment.ts
+postgres-data/
